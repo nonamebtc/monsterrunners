@@ -98,6 +98,7 @@ local Button = Tab:CreateButton({
             root.CFrame = targetRootPart.CFrame
         end
         
+        while true do
             local players = Players:GetPlayers()
             
             for _, player in ipairs(players) do
@@ -119,7 +120,8 @@ local Button = Tab:CreateButton({
                 
                 -- render step'i kaldır
                 RunService:UnbindFromRenderStep("TeleportStep")
-            en
+            end
+        end
     end,
  })
 local Button = Tab:CreateButton({
