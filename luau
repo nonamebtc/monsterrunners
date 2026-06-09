@@ -41,6 +41,7 @@ local Window = Rayfield:CreateWindow({
    }
 })
 local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
+local rs = game:GetService("RunService")
 local Toggle = Tab:CreateToggle({
    Name = "God Mode [BETA]",
    CurrentValue = false,
@@ -65,18 +66,19 @@ start:FireServer()
 end
 startgodmode()
 if debug then
+   uis.InputBegan:Connect(function(input,gp)
+      if gp then return end
+      if input.KeyCode == Enum.KeyCode.LeftShift then
+       req.Parent = game:GetService("ReplicatedStorage"):WaitForChild("Events")
+       task.wait(1)
+       req.Parent = game:GetService("ReplicatedStorage")
+       start:FireServer()
+       end -- if
+      end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function() task.wait(2);startgodmode() end)
 debug = false
 end
-uis.InputBegan:Connect(function(input,gp)
-if gp then return end
-if input.KeyCode == Enum.KeyCode.LeftShift then
- req.Parent = game:GetService("ReplicatedStorage"):WaitForChild("Events")
- task.wait(1)
- req.Parent = game:GetService("ReplicatedStorage")
- start:FireServer()
- end -- if
-end)
+
 Rayfield:Notify({
    Title = "God Mode Enabled",
    Duration = 3,
@@ -92,6 +94,23 @@ Rayfield:Notify({
    Image = 4483362458,
 })
 end -- value
+   end,
+})
+local Toggle = Tab:CreateToggle({
+   Name = "Auto Escape",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file; make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+if Value then
+    conn = rs.Heartbeat:Connect(function()
+      game.Players.LocalPlayer.Character:PivotTo(
+         workspace:WaitForChild("Rooms"):WaitForChild("EndRoom"):WaitForChild("Elevator1"):WaitForChild("Light"):GetPivot() + Vector3.new(0,-10,0)
+       )
+   end)
+else
+   conn:Disconnect()
+   conn = nil
+end
    end,
 })
 local Button = Tab:CreateButton({
