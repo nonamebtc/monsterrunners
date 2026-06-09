@@ -51,6 +51,7 @@ local start = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitFo
 local hidevent = game:GetService("ReplicatedStorage")
 local req =  game:GetService("ReplicatedStorage"):FindFirstChild("Events"):FindFirstChild("DashEndEvent") or game:GetService("ReplicatedStorage"):FindFirstChild("DashEndEvent")
 local uis = game:GetService("UserInputService")
+local debug = true
 if Value then
 local function startgodmode()
 if not req then Rayfield:Notify({
@@ -63,6 +64,10 @@ task.wait(0.5)
 start:FireServer()
 end
 startgodmode()
+if debug then
+game.Players.LocalPlayer.CharacterAdded:Connect(function() task.wait(2);startgodmode() end)
+debug = false
+end
 uis.InputBegan:Connect(function(input,gp)
 if gp then return end
 if input.KeyCode == Enum.KeyCode.LeftShift then
@@ -92,6 +97,9 @@ end -- value
 local Button = Tab:CreateButton({
     Name = "Kill All [For Monster]",
     Callback = function()
+      if workspace:FindFirstChild("SafeZone") then
+         workspace:FindFirstChild("SafeZone"):Destroy()
+      end
         local Players = game:GetService("Players")
         local LocalPlayer = Players.LocalPlayer
         local RunService = game:GetService("RunService")
@@ -147,7 +155,7 @@ local Button = Tab:CreateButton({
     end,
  })
  local Button = Tab:CreateButton({
-   Name = "No Cooldown Roll [DISABLE GOD MODE FOR USE]",
+   Name = "No Cooldown Roll [BETA]",
    Callback = function()
       local a; a = hookfunction(getrenv().wait, function(...)
          local args = {...}
