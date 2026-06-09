@@ -86,24 +86,35 @@ local Button = Tab:CreateButton({
         local LocalPlayer = Players.LocalPlayer
         local RunService = game:GetService("RunService")
         
+        -- 5 stud yukarı için değer
+        local UP_OFFSET = Vector3.new(0, 5, 0)
+        
         local function getCharacterRootPart(player)
             if not player or not player.Character then return nil end
-            return player.Character:FindFirstChild("HumanoidRootPart")
+            local root = player.Character:FindFirstChild("HumanoidRootPart")
+            return root
         end
         
         local function teleportTo(targetRootPart)
             if not LocalPlayer or not LocalPlayer.Character then return end
             local root = getCharacterRootPart(LocalPlayer)
             if not root then return end
-            root.CFrame = targetRootPart.CFrame
+            
+            -- Hedef + 5 stud yukarı
+            local targetCFrame = targetRootPart.CFrame * CFrame.new(0, 5, 0)
+            root.CFrame = targetCFrame
         end
         
-        while true do
+        -- Sonsuz döngü: sürekli oyuncuları dolaş
+        
+            -- Her tur yeni oyuncuları al (yeni gelenler dahil)
             local players = Players:GetPlayers()
             
             for _, player in ipairs(players) do
+                -- Kendin atlarsın
                 if player == LocalPlayer then continue end
                 
+                -- Karakteri veya RootPart yoksa atla
                 local targetRoot = getCharacterRootPart(player)
                 if not targetRoot then continue end
                 
@@ -111,17 +122,20 @@ local Button = Tab:CreateButton({
                 local startTime = tick()
                 while (tick() - startTime) < 1 do
                     teleportTo(targetRoot)
+                    
+                    -- RenderStep ile her frame'de de ışınlan (daha akıcı)
                     RunService:BindToRenderStep("TeleportStep", 1, function()
                         teleportTo(targetRoot)
                     end)
-                    -- kısa bekleme ile loop heavy olmayı önle
+                    
+                    -- Loop heavy olmayı önle
                     wait(0.02)
                 end
                 
-                -- render step'i kaldır
+                -- RenderStep'i kaldır
                 RunService:UnbindFromRenderStep("TeleportStep")
             end
-        end
+       
     end,
  })
 local Button = Tab:CreateButton({
