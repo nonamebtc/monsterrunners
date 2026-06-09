@@ -104,7 +104,7 @@ local Toggle = Tab:CreateToggle({
 if Value then
     conn = rs.Heartbeat:Connect(function()
       game.Players.LocalPlayer.Character:PivotTo(
-         workspace:WaitForChild("Rooms"):WaitForChild("EndRoom"):WaitForChild("Elevator1"):WaitForChild("Light"):GetPivot() + Vector3.new(0,-10,0)
+         workspace:WaitForChild("Rooms"):WaitForChild("EndRoom"):WaitForChild("Elevator1"):WaitForChild("Light"):GetPivot() + Vector3.new(0,-2,0)
        )
    end)
 else
