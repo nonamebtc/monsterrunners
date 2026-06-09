@@ -138,6 +138,22 @@ local Button = Tab:CreateButton({
        
     end,
  })
+ local Button = Tab:CreateButton({
+   Name = "No Cooldown Roll [DISABLE GOD MODE FOR USE]",
+   Callback = function()
+      local a; a = hookfunction(getrenv().wait, function(...)
+         local args = {...}
+         args[1] = 0
+         return a(unpack(args))
+         end)
+         
+         local a; a = hookfunction(getrenv().task.wait, function(...)
+         local args = {...}
+         args[1] = 0
+         return a(unpack(args))
+         end)
+   end,
+})
 local Button = Tab:CreateButton({
    Name = "Rejoin",
    Callback = function()
