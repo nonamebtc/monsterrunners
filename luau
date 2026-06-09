@@ -50,6 +50,7 @@ local Toggle = Tab:CreateToggle({
 local start = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("DashStartEvent")
 local hidevent = game:GetService("ReplicatedStorage")
 local req =  game:GetService("ReplicatedStorage"):FindFirstChild("Events"):FindFirstChild("DashEndEvent") or game:GetService("ReplicatedStorage"):FindFirstChild("DashEndEvent")
+local uis = game:GetService("UserInputService")
 if Value then
 local function startgodmode()
 if not req then Rayfield:Notify({
@@ -62,6 +63,15 @@ task.wait(0.5)
 start:FireServer()
 end
 startgodmode()
+uis.InputBegan:Connect(function(input,gp)
+if gp then return end
+if input.KeyCode == Enum.KeyCode.LeftShift then
+ req.Parent = game:GetService("ReplicatedStorage"):WaitForChild("Events")
+ task.wait(1)
+ req.Parent = game:GetService("ReplicatedStorage")
+ start:FireServer()
+ end -- if
+end)
 Rayfield:Notify({
    Title = "God Mode Enabled",
    Duration = 3,
@@ -86,8 +96,6 @@ local Button = Tab:CreateButton({
         local LocalPlayer = Players.LocalPlayer
         local RunService = game:GetService("RunService")
         
-        -- 5 stud yukarı için değer
-        local UP_OFFSET = Vector3.new(0, 5, 0)
         
         local function getCharacterRootPart(player)
             if not player or not player.Character then return nil end
@@ -101,7 +109,7 @@ local Button = Tab:CreateButton({
             if not root then return end
             
             -- Hedef + 5 stud yukarı
-            local targetCFrame = targetRootPart.CFrame * CFrame.new(0, 5, 0)
+            local targetCFrame = targetRootPart.CFrame
             root.CFrame = targetCFrame
         end
         
